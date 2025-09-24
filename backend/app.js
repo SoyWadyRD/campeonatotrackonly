@@ -19,6 +19,11 @@ app.use(express.json());
 // Servir frontend como estático
 app.use(express.static(path.join(__dirname, "../frontend")));
 
+// Redirigir la raíz al login
+app.get("/", (req, res) => {
+  res.redirect("/login.html"); // Aquí va tu archivo de login
+});
+
 // Importar rutas
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
