@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="img/logos/logo_ico.ico" type="image/x-icon">
+<title>Torneo Track Only - Inscripciones</title>
+<style>
+
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+  ::-webkit-scrollbar {
+  width: 12px; /* grosor */
+}
+
+::-webkit-scrollbar-track {
+  background: #1c1c1c; /* fondo de la barra */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #007fcd; /* color del "pulgar" */
+  border-radius: 10px;
+  border: 3px solid #1c1c1c; /* separa del track */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #007fcd; /* color al pasar el mouse */
+}
+
+.scrollable {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* hace scroll suave en iOS */
+}
+
+
+
+
+
+
+
+
+
+
+
+body { 
+  background:#1c1c1c; 
+  color:#fff; 
+  font-family:Arial, sans-serif; 
+  margin:0; 
+  padding:0; 
+ }
+
+h1 { text-align:center; 
+  margin:20px 0; 
+  font-size:24px; }
+  
+.table-container { width:100%; max-width:600px; overflow-x:auto; margin-bottom:20px; }
+table { width:100%; border-collapse:collapse; margin:0 auto; }
+th, td { padding:10px; border:1px solid #444; text-align:center; font-size:14px; vertical-align:middle; }
+th { background:#222; }
+img.logo { width:50px; height:auto; }
+button { padding:5px 10px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; font-size:14px; }
+.inscribirse { background: cyan; color:#000; }
+.confirmar { background: #0f0; color:#000; margin-left:5px; margin-top:5px; }
+.salir { background: red; color:#fff; margin-top:5px; }
+select, input { padding:5px; border-radius:5px; font-size:14px; background:#2c2c2c; color:#fff; border:1px solid #555; }
+.notification { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background: #007fcd; color:#000; padding:10px 20px; border-radius:8px; font-weight:bold; text-align:center; box-shadow:0 0 10px cyan; z-index:200; font-size:14px; }
+
+/* Responsive */
+@media (max-width:480px){
+  h1{font-size:20px;}
+  th,td{padding:6px;font-size:12px;}
+  img.logo{width:40px;}
+  button{padding:4px 8px;font-size:12px;}
+  select,input{font-size:12px;padding:4px;}
+  .notification{padding:8px 16px;font-size:12px;}
+}
+@media (max-width:360px){
+  h1{font-size:18px;}
+  th,td{padding:4px;font-size:11px;}
+  img.logo{width:100px;}
+  button{padding:3px 6px;font-size:11px;}
+  select,input{font-size:11px;padding:3px;}
+  .notification{padding:6px 12px;font-size:11px;}
+}
+
+
+
+
+/* Fila 1 */
+.table-container tr:nth-child(2) td:nth-child(2),
+.table-container tr:nth-child(2) td:nth-child(3) {
+    background-color: #ff0000; /* rojo */
+    color: #fff;
+}
+
+/* Fila 2 */
+.table-container tr:nth-child(3) td:nth-child(2),
+.table-container tr:nth-child(3) td:nth-child(3) {
+    background-color: #000000; /* negro */
+    color: #fff;
+}
+
+/* Fila 3 */
+.table-container tr:nth-child(4) td:nth-child(2),
+.table-container tr:nth-child(4) td:nth-child(3) {
+    background-color: #007fcd; /* azul celeste */
+    color: #000;
+}
+
+/* Fila 4 */
+.table-container tr:nth-child(5) td:nth-child(2),
+.table-container tr:nth-child(5) td:nth-child(3) {
+    background-color: #ffff00; /* amarillo */
+    color: #000;
+}
+
+/* Fila 5 */
+.table-container tr:nth-child(6) td:nth-child(2),
+.table-container tr:nth-child(6) td:nth-child(3) {
+    background-color: #39ff14; /* verde chillón */
+    color: #000;
+}
+
+/* Fila 6 */
+.table-container tr:nth-child(7) td:nth-child(2),
+.table-container tr:nth-child(7) td:nth-child(3) {
+    background-color: #ffffff; /* blanco */
+    color: #000;
+}
+
+
+
+
+
+
+
+
+
+
+
+header {
+  text-align: center;
+  padding: 20px;
+  background-color: #2c2c2c;
+}
+
+.engage {
+  color: #007fcd;
+  font-style: italic;
+}
+
+.sponsor {
+  color: #fff;
+  font-weight: bold;
+}
+
+
+
+h2 {
+  color: #007fcd;
+  margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+#puntos{
+  margin: 10px;
+}
+
+#puntos td{
+  font-size: 15px;
+}
+
+
+
+
+
+
+
+#tiktok {
+  text-align: center;
+  padding: 20px;
+  background-color: #2c2c2c;
+  border-top: 1px solid #333;
+}
+
+#tiktok p {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: #007fcd;
+}
+
+.tiktok-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2em;
+  transition: transform 0.2s;
+}
+
+.tiktok-link:hover {
+  transform: scale(1.05);
+}
+
+.tiktok-logo {
+  width: 40px;
+  height: 40px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Lightbox */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-img {
+  max-width: 90%;
+  max-height: 90%;
+  border: 3px solid #007fcd;
+  border-radius: 5px;
+}
+
+.cerrar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2em;
+  color: #007fcd;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+.galeria .autos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.galeria img {
+  width: 342px;
+  height: 342px;
+  object-fit: cover;
+  border: 2px solid #007fcd;
+  border-radius: 5px;
+}
+
+footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #2c2c2c;
+}
+
+@media (max-width: 768px) {
+  .galeria img {
+    width: 45%;
+    height: auto;
+  }
+}
+
+
+
+
+
+
+#rutas{
+  margin: 10px;
+}
+
+.galeria-rutas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.galeria-rutas img.ruta {
+  width: 45%;
+  max-width: 500px;
+  height: auto;
+  border: 2px solid #007fcd;
+  border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .galeria-rutas img.ruta {
+    width: 90%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.mensaje-sesion {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #2c2c2c;
+  color: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 16px;
+  box-shadow: 0 0 15px cyan;
+  z-index: 9999;
+}
+
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+   <header>
+    <img src="img/logos/logo.png" alt="" style="width: 300px;">
+    <h1>Campeonato Track Only</h1>
+    <p class="engage">“Solo los mejores dominarán el amanecer.”</p>
+    <p class="sponsor">Patrocinador oficial: <strong>Soy Wady RD</strong></p>
+
+    <!-- Contador -->
+    <div id="contador">
+      <span id="dias">0</span>d :
+      <span id="horas">0</span>h :
+      <span id="minutos">0</span>m :
+      <span id="segundos">0</span>s
+    </div>
+  </header>
+
+
+
+<section id="fecha-hora" style="margin: 10px;">
+  <h2>📅 Fecha y hora</h2>
+  <p><strong>Fecha:</strong> 4 de octubre</p>
+  <ul class="horarios">
+    <li>🇦🇷 Argentina: 9:00 PM</li>
+    <li>🇧🇷 Brasil: 9:00 PM</li>
+    <li>🇨🇱 Chile: 9:00 PM</li>
+    <li>🇨🇴 Colombia: 8:00 PM</li>
+    <li>🇨🇷 Costa Rica: 6:00 PM</li>
+    <li>🇨🇺 Cuba: 8:00 PM</li>
+    <li>🇩🇴 República Dominicana: 8:00 PM</li>
+    <li>🇪🇨 Ecuador: 8:00 PM</li>
+    <li>🇸🇻 El Salvador: 6:00 PM</li>
+    <li>🇬🇹 Guatemala: 6:00 PM</li>
+    <li>🇭🇳 Honduras: 6:00 PM</li>
+    <li>🇲🇽 México: 7:00 PM</li>
+    <li>🇳🇮 Nicaragua: 6:00 PM</li>
+    <li>🇵🇦 Panamá: 7:00 PM</li>
+    <li>🇵🇾 Paraguay: 9:00 PM</li>
+    <li>🇵🇪 Perú: 8:00 PM</li>
+    <li>🇺🇾 Uruguay: 10:00 PM</li>
+    <li>🇻🇪 Venezuela: 9:00 PM</li>
+    <li>🇮🇹 Italia: 2:00 AM (5 de octubre)</li>
+    <li>🇪🇸 España: 2:00 AM (5 de octubre)</li>
+    <li>🇩🇿 Argelia: 1:00 AM (5 de octubre)</li>
+  </ul>
+</section>
+
+
+
+  <section id="descripcion"style="margin: 10px;">
+    <h2>📝 Descripción</h2>
+    <p>Campeonato Track Only <strong>por equipos</strong>: 6 equipos × 2 pilotos (máximo 12 en parrilla).</p>
+    <p>Se compite por <strong>dos títulos</strong>: Piloto Campeón y Equipo Campeón.</p>
+    <p>Las carreras <strong>empiezan de noche y terminan de día</strong> para vivir el amanecer en pista.</p>
+  </section>
+
+  <section id="premios"style="margin: 10px;">
+    <h2>🏆 Premios</h2>
+    <ul>
+      <li><strong>Campeón individual:</strong> 10,000,000 CR</li>
+      <br>
+      <li><strong>Equipo campeón:</strong> 5,000,000 CR por piloto</li>
+    </ul>
+  </section>
+
+  <section id="formato" style="margin: 10px;">
+    <h2>📊 Formato del campeonato</h2>
+    <p>5 carreras (suma de puntos en todas)</p>
+    <ul>
+      <li>Tablas: <strong>Individual</strong> y <strong>Por equipos</strong></li>
+      <li>Convoy máximo: 12 jugadores (6 equipos)</li>
+    </ul>
+  </section>
+
+
+
+
+
+<section id="rutas">
+  <h2>🗺️ Rutas de las carreras</h2>
+  <ul>
+    <li><strong>1° Carrera:</strong> Goliat</li>
+    <li><strong>2° Carrera:</strong> El Coloso</li>
+    <li><strong>3° Carrera:</strong> Goliat</li>
+    <li><strong>4° Carrera:</strong> El Coloso</li>
+    <li><strong>5° Carrera:</strong> Wady Circuit</li>
+  </ul>
+
+  <div class="galeria-rutas">
+    <img src="img/rutas/goliat.png" alt="Ruta Goliat" class="ruta zoom">
+    <img src="img/rutas/elColoso.png" alt="Ruta El Coloso" class="ruta zoom">
+    <img src="img/rutas/wadycircuit.png" alt="Wady Circuit" class="ruta zoom">
+  </div>
+</section>
+
+
+
+
+
+
+  <section id="ajustes" style="margin: 10px;">
+    <h2>⚙️ Ajustes de carrera</h2>
+    <ul>
+      <li>Clase: X (999)</li>
+      <li>Daños: Ninguno</li>
+      <li>Asistencias permitidas: TCS, ABS, Control de Estabilidad, Rebobinar, Automático o Manual</li>
+      <li>Colisiones: Activadas (fantasma inicial para salida limpia)</li>
+      <li>Condiciones: Inicio al anochecer → final de día</li>
+    </ul>
+  </section>
+
+
+
+
+<section id="reglas-vehiculos" style="margin: 10px;">
+    <h2>🚗 Reglas de vehículos</h2>
+    <ul>
+      <li>11 vehículos Track Only elegibles</li>
+      <li>Primero en confirmar un modelo asegura el cupo</li>
+      <li>Los 2 pilotos del mismo equipo deben llevar el mismo color y estilo de diseño que el color
+         marcado en la tabla(no importa si tiene diseños de otro color pero el color base del vehiculo 
+         debe ser igual al color elegido de equipo)</li>
+      <li>Tuning y mejoras libres mientras cumpla Clase X (999)</li>
+    </ul>
+    <div class="galeria">
+      <h2>Galería Track Only</h2>
+      <div class="autos">
+        <img src="img/autos/huayra_bc.png" alt="GT3 Auto 2" class="zoom">
+        <img src="img/autos/huayra_bc_fe.png" alt="GT3 Auto 1" class="zoom">
+        <img src="img/autos/amg_one.png" alt="GT3 Auto 3" class="zoom">
+        <img src="img/autos/amgclk.png" alt="GT3 Auto 4" class="zoom">
+        <img src="img/autos/kbow_gt2.png" alt="GT3 Auto 5" class="zoom">
+        <img src="img/autos/ktm_gt4.png" alt="GT3 Auto 6" class="zoom">
+        <img src="img/autos/valhalla.png" alt="GT3 Auto 7" class="zoom">
+        <img src="img/autos/amrpro.png" alt="GT3 Auto 8" class="zoom">
+        <img src="img/autos/fxxk_2014.png" alt="GT3 Auto 9" class="zoom">
+        <img src="img/autos/fxxk_2019.png" alt="GT3 Auto 10" class="zoom">
+        <img src="img/autos/murray.png" alt="GT3 Auto 11" class="zoom">
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+   
+
+  <div id="lightbox" class="lightbox">
+    <span class="cerrar">&times;</span>
+    <img class="lightbox-img" src="" alt="Auto ampliado">
+  </div>
+
+
+
+
+
+  <section id="puntos">
+    <h2>🧮 Sistema de puntos</h2>
+    <table>
+      <thead>
+        <tr><th>Posición</th><th>Puntos</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1°</td><td>25</td></tr>
+        <tr><td>2°</td><td>18</td></tr>
+        <tr><td>3°</td><td>15</td></tr>
+        <tr><td>4°</td><td>12</td></tr>
+        <tr><td>5°</td><td>10</td></tr>
+        <tr><td>6°</td><td>8</td></tr>
+        <tr><td>7°</td><td>6</td></tr>
+        <tr><td>8°</td><td>4</td></tr>
+        <tr><td>9°</td><td>2</td></tr>
+        <tr><td>10°</td><td>1</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Desempates:</strong> 1) Más victorias 2) Mejor vuelta rápida 3) Mejor posición en última carrera</p>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 style="color: #007fcd;">Tabla de Inscripciones</h1>
+<div class="table-container" id="tabla-container"></div>
+<div id="notification" class="notification"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <section id="tiktok">
+  <h2>🎥 Transmisión en vivo</h2>
+  <p>Sigue la carrera en vivo en mi canal de <strong>TikTok</strong> y no te pierdas ningún momento. ¡Sígueme! 👇</p>
+  <a href="https://www.tiktok.com/@soy_wady_rd" target="_blank" class="tiktok-link">
+    <img src="img/logos/tiktok.webp" alt="TikTok" class="tiktok-logo">
+    Soy Wady RD
+  </a>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+// Contador
+const countdownDate = new Date("October 4, 2025 20:00:00 GMT-0400").getTime();
+
+const x = setInterval(() => {
+  const now = new Date().getTime();
+  const distance = countdownDate - now;
+
+  const days = Math.floor(distance / (1000*60*60*24));
+  const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+  const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+  const seconds = Math.floor((distance % (1000*60)) / 1000);
+
+  document.getElementById("dias").innerText = days;
+  document.getElementById("horas").innerText = hours;
+  document.getElementById("minutos").innerText = minutes;
+  document.getElementById("segundos").innerText = seconds;
+
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("contador").innerText = "¡La carrera ha comenzado!";
+  }
+}, 1000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Lightbox autos
+const zoomImgs = document.querySelectorAll(".zoom");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.querySelector(".lightbox-img");
+const cerrar = document.querySelector(".cerrar");
+
+zoomImgs.forEach(img => {
+  img.addEventListener("click", () => {
+    lightbox.style.display = "flex";
+    lightboxImg.src = img.src;
+  });
+});
+
+cerrar.addEventListener("click", () => {
+  lightbox.style.display = "none";
+});
+
+lightbox.addEventListener("click", (e) => {
+  if(e.target !== lightboxImg) lightbox.style.display = "none";
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const usuario = JSON.parse(localStorage.getItem("usuario"));
+const notification = document.getElementById("notification");
+
+
+
+
+
+
+
+
+
+function mostrarMensajeNoSesion() {
+  // Crear el mensaje flotante
+  const div = document.createElement("div");
+  div.className = "mensaje-sesion";
+  div.innerHTML = `
+    Usted no ha iniciado sesión.<br>
+    Será redirigido al login en 3 segundos...
+  `;
+  document.body.appendChild(div);
+
+  // Redirección después de 3s
+  setTimeout(() => {
+    window.location.href = "login.html"; // cambia si tu ruta es diferente
+  }, 3000);
+}
+
+if (!usuario) {
+  mostrarMensajeNoSesion();
+} else {
+  cargarInscripciones();
+}
+
+
+
+
+
+
+
+
+
+
+function mostrarNotificacion(msg){
+  notification.textContent = msg;
+  notification.style.display = "block";
+  setTimeout(()=>{ notification.style.display = "none"; },2000);
+}
+
+async function cargarInscripciones(){
+  const res = await fetch("/api/inscripciones");
+  const data = await res.json();
+  const marcas = data.marcas;
+  const usuarioInscritoGlobal = marcas.some(m=>m.inscritos.includes(usuario.gamertag));
+
+  let html = `<table>
+    <tr>
+      <th>Marca</th>
+      <th>Piloto 1</th>
+      <th>Piloto 2</th>
+    </tr>`;
+
+  marcas.forEach(marca=>{
+    const auto1 = marca.autos[0];
+    const auto2 = marca.autos[1];
+    const piloto1 = marca.inscritos[0];
+    const piloto2 = marca.inscritos[1];
+
+
+
+
+
+
+
+
+
+
+    let celdaPiloto1 = '';
+if(piloto1) {
+  if(piloto1 === usuario.gamertag) {
+    celdaPiloto1 = `
+      <div>${piloto1}</div>
+      <div style="margin-top:1px;">${auto1 || ''}</div>
+      <div style="margin-top:1px;"><button class="salir" data-marca="${marca.nombre}" data-auto="${auto1}">❌ Salir</button></div>
+    `;
+  } else {
+    celdaPiloto1 = `
+      <div>${piloto1}</div>
+      <div style="margin-top:1px;">${auto1 || ''}</div>
+    `;
+  }
+} else if(!usuarioInscritoGlobal) {
+  celdaPiloto1 = `<button class="inscribirse" data-marca="${marca.nombre}" data-piloto="1">✔ Inscribirse</button>`;
+}
+
+
+
+
+
+
+
+let celdaPiloto2 = '';
+if(piloto2) {
+  if(piloto2 === usuario.gamertag) {
+    celdaPiloto2 = `
+      <div>${piloto2}</div>
+      <div style="margin-top:1px;">${auto2 || ''}</div>
+      <div style="margin-top:1px;"><button class="salir" data-marca="${marca.nombre}" data-auto="${auto2}">❌ Salir</button></div>
+    `;
+  } else {
+    celdaPiloto2 = `
+      <div>${piloto2}</div>
+      <div style="margin-top:1px;">${auto2 || ''}</div>
+    `;
+  }
+} else if(!usuarioInscritoGlobal) {
+  celdaPiloto2 = `<button class="inscribirse" data-marca="${marca.nombre}" data-piloto="2">✔ Inscribirse</button>`;
+}
+
+
+
+
+
+
+
+
+    html += `<tr>
+      <td><img class="logo" src="${marca.logo}" alt="${marca.nombre}">
+      <td>${celdaPiloto1}</td>
+      <td>${celdaPiloto2}</td>
+    </tr>`;
+  });
+
+  html += `</table>`;
+  document.getElementById("tabla-container").innerHTML = html;
+
+  // Eventos inscribirse
+  document.querySelectorAll(".inscribirse").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const marca = btn.dataset.marca;
+      const piloto = btn.dataset.piloto;
+
+      const resMarcas = await fetch("/api/inscripciones");
+      const dataMarcas = await resMarcas.json();
+      const marcaData = dataMarcas.marcas.find(m=>m.nombre===marca);
+      const autosDisponibles = marcaData.autos.filter((a,i)=>!marcaData.inscritos[i]);
+      if(autosDisponibles.length===0){ mostrarNotificacion("No hay autos disponibles"); return; }
+
+      const selectId = `select-auto-${marca}-${piloto}`;
+      const celda = btn.parentElement;
+      celda.innerHTML = `<select id="${selectId}">${autosDisponibles.map(a=>`<option value="${a}">${a}</option>`)}</select>
+                         <button class="confirmar" data-marca="${marca}" data-piloto="${piloto}">✔ Confirmar</button>`;
+
+      document.querySelector(".confirmar").addEventListener("click", async ()=>{
+        const select = document.getElementById(selectId);
+        const auto = select.value;
+        try{
+          const res = await fetch("/api/inscripciones/inscribirse",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({ usuarioId: usuario._id, marca, auto })
+          });
+          const data = await res.json();
+          mostrarNotificacion(data.message);
+          cargarInscripciones();
+        }catch(e){ mostrarNotificacion("Error al inscribirse"); }
+      });
+    });
+  });
+
+  // Eventos salir
+  document.querySelectorAll(".salir").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      try{
+        const res = await fetch(`/api/inscripciones/salir/${usuario._id}`, { method: "DELETE" });
+        const data = await res.json();
+        mostrarNotificacion(data.message);
+        cargarInscripciones();
+      }catch(e){ mostrarNotificacion("Error al salir"); }
+    });
+  });
+}
+
+cargarInscripciones();
+</script>
+</body>
+</html>

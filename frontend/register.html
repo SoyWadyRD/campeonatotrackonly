@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="img/logos/logo_ico.ico" type="image/x-icon">
+<title>Registro - Torneo Track Only</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1c1c1c;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .auth-container {
+    width: 90%;
+    max-width: 360px;
+    background: #2c2c2c;
+    padding: 30px 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #007fcd;
+  }
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007fcd;
+  }
+  label { display: block; margin-bottom: 5px; font-weight: bold; color: #fff; }
+  input {
+    width: 100%;
+    padding: 8px 35px 8px 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background: #2c2c2c;
+    color: #fff;
+    font-size: 14px;
+  }
+
+   input:focus{
+      outline: none;
+  border: 1px solid #007fcd;
+   }
+  
+.password-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.password-container input {
+  width: 100%;
+  padding: 8px 40px 8px 10px; /* espacio para el ojito */
+  border-radius: 5px;
+  border: 1px solid #555;
+  background: #2c2c2c;
+  color: #fff;
+  font-size: 14px;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.password-container input:focus {
+  outline: none;
+  border: 1px solid #007fcd;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 65%;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.password-help {
+  color: red;
+  font-size: 12px;
+  margin: 5px 0 10px;
+}
+  button {
+    width: 100%;
+    padding: 10px;
+    background: #007fcd;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  button:hover { filter: brightness(1.1); }
+  p { text-align: center; margin-top: 15px; }
+  a { color: #007fcd; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .notification {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #007fcd;
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 0 15px #007fcd;
+    z-index: 200;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+  }
+  .modal-content {
+    background-color: #222;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    color: #fff;
+    box-shadow: 0 0 15px #007fcd;
+    text-align: center;
+      display: flex;
+  flex-direction: column;
+  align-items: center; /* centra el contenido */
+  }
+
+  .modal-content p {
+  margin-bottom: 15px; /* separamos el texto */
+}
+
+  .modal-content button {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+      margin: 5px; /* espacio igual a izquierda y derecha */
+  min-width: 100px; /* opcional: mismo ancho */
+  }
+  .accept-btn { background: #007fcd; color: #000; }
+  .cancel-btn { background: #555; color: #fff; }
+  @media (max-width: 480px) {
+    .auth-container { padding: 25px 20px; }
+    h1 { font-size: 20px; }
+    input { font-size: 13px; padding: 7px 32px 7px 10px; }
+    button { font-size: 13px; padding: 9px; }
+    .modal-content { margin: 20% auto; padding: 15px; }
+  }
+  @media (max-width: 320px) {
+    .auth-container { padding: 20px 15px; }
+    h1 { font-size: 18px; }
+    input { font-size: 12px; padding: 6px 30px 6px 8px; }
+    button { font-size: 12px; padding: 8px; }
+    .modal-content { margin: 25% auto; padding: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="notification" class="notification"></div>
+
+<div class="auth-container">
+  <h1>Registro</h1>
+  <form id="registerForm">
+    <label for="gamertag">Gamertag</label>
+    <input type="text" id="gamertag" name="gamertag" required>
+<br><br>
+    <div class="password-container">
+          <label for="gamertag">Contraseña</label>
+  <input type="password" id="password" name="password" required>
+  <img src="https://img.icons8.com/ios-glyphs/30/007fcd/visible.png" 
+       class="toggle-password" alt="Mostrar/ocultar">
+</div>
+<div id="passwordHelp" class="password-help"></div>
+
+    <button type="submit">Registrarse</button>
+  </form>
+  <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+</div>
+
+<!-- Modal de condiciones -->
+<div id="conditionsModal" class="modal">
+  <div class="modal-content">
+    <p>
+      Al registrarte y participar en este torneo, usted acepta cumplir todas las normas del torneo, respetar los horarios de las carreras y mantener una conducta adecuada en todo momento. El incumplimiento puede llevar a la descalificación.
+    </p>
+    <button id="acceptBtn" class="accept-btn">Acepto</button>
+    <button id="cancelBtn" class="cancel-btn">Cancelar</button>
+  </div>
+</div>
+
+<script>
+const form = document.getElementById("registerForm");
+const modal = document.getElementById("conditionsModal");
+const acceptBtn = document.getElementById("acceptBtn");
+const cancelBtn = document.getElementById("cancelBtn");
+const notification = document.getElementById("notification");
+const togglePassword = document.querySelector(".toggle-password");
+const passwordInput = document.getElementById("password");
+const passwordHelp = document.getElementById("passwordHelp");
+
+// Toggle contraseña
+togglePassword.addEventListener("click", () => {
+  passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+});
+
+// Validación en tiempo real
+passwordInput.addEventListener("input", () => {
+  const value = passwordInput.value;
+  const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+  if (!regex.test(value)) {
+    passwordInput.style.borderColor = "red";
+    passwordHelp.textContent = "La contraseña debe tener mínimo 8 caracteres, una mayúscula y un número";
+  } else {
+    passwordInput.style.borderColor = "cyan";
+    passwordHelp.textContent = "";
+  }
+});
+
+// Submit del formulario
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const password = passwordInput.value;
+  const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+  if (!regex.test(password)) {
+    notification.textContent = "La contraseña debe tener mínimo 8 caracteres, una mayúscula y un número";
+    notification.style.display = "block";
+    setTimeout(() => { notification.style.display = "none"; }, 2500);
+    return;
+  }
+  modal.style.display = "block";
+});
+
+// Modal de condiciones
+acceptBtn.addEventListener("click", async () => {
+  modal.style.display = "none";
+  const gamertag = document.getElementById("gamertag").value;
+  const password = passwordInput.value;
+  const boton = form.querySelector("button");
+  boton.disabled = true;
+
+  try {
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ gamertag, password }),
+    });
+    const data = await res.json();
+
+    notification.textContent = data.message;
+    notification.style.display = "block";
+    setTimeout(() => { notification.style.display = "none"; }, 2500);
+
+    if (res.status === 201) {
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+      localStorage.setItem("token", data.token);
+      setTimeout(() => { window.location.href = "index.html"; }, 2000);
+    }
+  } catch (error) {
+    notification.textContent = "Error al registrar usuario";
+    notification.style.display = "block";
+    setTimeout(() => { notification.style.display = "none"; }, 2500);
+  } finally {
+    boton.disabled = false;
+  }
+});
+
+cancelBtn.addEventListener("click", () => { modal.style.display = "none"; });
+window.addEventListener("click", (event) => { if (event.target == modal) modal.style.display = "none"; });
+</script>
+
+</body>
+</html>

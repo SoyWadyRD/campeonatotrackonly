@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="img/logos/logo_ico.ico" type="image/x-icon">
+<title>Login - Torneo Track Only</title>
+<style>
+  /* Reset y body */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1c1c1c;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Contenedor del login */
+  .auth-container {
+    width: 90%;
+    max-width: 360px;
+    background: #2c2c2c;
+    padding: 30px 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #007fcd;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007fcd;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px 35px 8px 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background: #2c2c2c;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  input:focus{
+    outline: none;
+    border: 1px solid #007fcd;
+  }
+
+  .password-container {
+    position: relative;
+  }
+
+  .toggle-password {
+    position: absolute;
+    top: 31%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background: #007fcd;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    filter: brightness(1.1);
+  }
+
+  p {
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  a {
+    color: #007fcd;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Notificación */
+  .notification {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #007fcd;
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 0 15px #007fcd;
+    z-index: 200;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .auth-container { padding: 25px 20px; }
+    h1 { font-size: 20px; }
+    input { font-size: 13px; padding: 7px 32px 7px 10px; }
+    button { font-size: 13px; padding: 9px; }
+  }
+
+  @media (max-width: 320px) {
+    .auth-container { padding: 20px 15px; }
+    h1 { font-size: 18px; }
+    input { font-size: 12px; padding: 6px 30px 6px 8px; }
+    button { font-size: 12px; padding: 8px; }
+  }
+
+</style>
+</head>
+<body>
+
+  <div id="notification" class="notification"></div>
+
+  <div class="auth-container">
+    <h1>Iniciar Sesión</h1>
+    <form id="loginForm">
+      <label for="gamertag">Gamertag</label>
+      <input type="text" id="gamertag" name="gamertag" required>
+
+      <label for="password">Contraseña</label>
+      <div class="password-container">
+        <input type="password" id="password" name="password" required>
+        <img src="https://img.icons8.com/ios-glyphs/30/007fcd/visible.png" class="toggle-password" alt="Mostrar/ocultar">
+      </div>
+
+      <button type="submit">Entrar</button>
+    </form>
+    <p>¿No tienes cuenta? <a href="register.html">Regístrate aquí</a></p>
+  </div>
+
+<script>
+  const form = document.getElementById("loginForm");
+  const notification = document.getElementById("notification");
+  const togglePassword = document.querySelector(".toggle-password");
+  const passwordInput = document.getElementById("password");
+
+  togglePassword.addEventListener("click", () => {
+    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const gamertag = document.getElementById("gamertag").value;
+    const password = passwordInput.value;
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ gamertag, password }),
+      });
+      const data = await res.json();
+      notification.textContent = data.message;
+      notification.style.display = "block";
+
+      if (res.status === 200) {
+        localStorage.setItem("usuario", JSON.stringify(data.usuario));
+        localStorage.setItem("token", data.token);
+        setTimeout(() => {
+          notification.style.display = "none";
+          window.location.href = "index.html";
+        }, 2000);
+      } else {
+        setTimeout(() => { notification.style.display = "none"; }, 2000);
+      }
+    } catch (error) {
+      notification.textContent = "Error al iniciar sesión";
+      notification.style.display = "block";
+      setTimeout(() => { notification.style.display = "none"; }, 2000);
+    }
+  });
+</script>
+
+</body>
+</html>
