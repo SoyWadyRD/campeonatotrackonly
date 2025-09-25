@@ -16,9 +16,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Redirigir la raíz al login
+// Redirigir la raíz al login antes de servir archivos estáticos
 app.get("/", (req, res) => {
-  res.redirect("/login.html"); // tu archivo de login
+  res.redirect("/login.html");
 });
 
 // Servir frontend como estático
