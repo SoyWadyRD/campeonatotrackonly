@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="img/logos/logo_ico.ico" type="image/x-icon">
+<title>Resultados - Torneo</title>
+<style>
+  body {
+    background-color: #1a1a1a;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3 {
+    text-align: center;
+    color: #007fcd;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #007fcd;
+    padding: 10px;
+    text-align: center;
+  }
+
+  th {
+    background-color: #007fcd;
+    color: #fff;
+  }
+
+  select {
+    background-color: #1a1a1a;
+    color: #fff;
+    border: 1px solid #007fcd;
+    border-radius: 4px;
+    padding: 4px;
+  }
+
+  .galeria img {
+    width: 342px;
+    height: 342px;
+    object-fit: cover;
+    border: 2px solid #007fcd;
+    border-radius: 5px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #2c2c2c;
+    color: #fff;
+    margin-top: 30px;
+  }
+
+  .tabla-carreras select {
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+
+
+    <!-- Botón de volver -->
+<div style="text-align: center; margin: 20px 0;">
+  <button onclick="window.location.href='index.html'" 
+          style="background-color:#007fcd; color:#fff; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">
+    ⬅ Volver al Inicio
+  </button>
+</div>
+
+
+
+
+<h1>Resultados del Torneo</h1>
+
+<h2>Clasificación Individual</h2>
+<table id="tablaIndividual">
+  <thead>
+    <tr>
+      <th>Posición</th>
+      <th>Piloto</th>
+      <th>Puntos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Se llenará con JS -->
+  </tbody>
+</table>
+
+<h2>Clasificación por Equipo</h2>
+<table id="tablaEquipo">
+  <thead>
+    <tr>
+      <th>Equipo</th>
+      <th>Pilotos</th>
+      <th>Puntos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Se llenará con JS -->
+  </tbody>
+</table>
+
+<h2>Carreras</h2>
+<div id="carrerasContainer">
+  <!-- Carreras 1-5 -->
+</div>
+
+<footer style="background-color:#2c2c2c; text-align:center; padding:15px; display:flex; flex-direction:column; align-items:center; gap:5px;">
+  <img src="img/logos/logo.png" alt="Campeonato Track Only" style="width:100px; height:auto; margin-bottom:5px;">
+  <span style="color:#fff; font-weight:bold;">© Campeonato Track Only</span>
+</footer>
+
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const usuario = JSON.parse(localStorage.getItem('usuario') || '{}'); // id, gamertag, admin
+const socket = io(); // Conectar a Socket.IO
+
+const puntosPorPosicion = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1, 0, 0];
+
+async function obtenerPilotos() {
+  const res = await fetch('/api/usuarios', {
+    headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
+  });
+  const usuarios = await res.json();
+  return usuarios.filter(u => u.equipo); // solo pilotos activos
+}
+
+async function cargarResultados(data = null) {
+  // Si no se pasa data, se obtiene desde el API
+  if (!data) {
+    const res = await fetch('/api/resultados', {
+      headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
+    });
+    data = await res.json();
+  }
+
+  const pilotosActivos = await obtenerPilotos();
+
+  // --- Tabla individual ---
+  const tbodyInd = document.querySelector('#tablaIndividual tbody');
+  tbodyInd.innerHTML = '';
+  const sortedIndividual = [...(data.puntosIndividuales || [])].sort((a, b) => b.puntos - a.puntos);
+  sortedIndividual.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i+1}</td><td>${p.gamertag}</td><td>${p.puntos}</td>`;
+    tbodyInd.appendChild(tr);
+  });
+
+  // --- Tabla equipos ---
+  const tbodyEq = document.querySelector('#tablaEquipo tbody');
+  tbodyEq.innerHTML = '';
+  const sortedEquipos = [...(data.puntosPorEquipo || [])].sort((a, b) => b.puntos - a.puntos);
+  sortedEquipos.forEach(eq => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${eq.equipo}</td><td>${eq.pilotos.join(', ')}</td><td>${eq.puntos}</td>`;
+    tbodyEq.appendChild(tr);
+  });
+
+  // --- Carreras ---
+  const cont = document.getElementById('carrerasContainer');
+  cont.innerHTML = '';
+  data.carreras.forEach(c => {
+    const div = document.createElement('div');
+    div.classList.add('tabla-carreras');
+
+    let html = `<h3>${c.nombre}</h3><table><thead><tr><th>Posición</th><th>Piloto</th><th>Puntos</th></tr></thead><tbody>`;
+    const pilotosAsignados = [];
+
+    c.posiciones.forEach(pos => {
+      // Calcular puntos según posición
+      const puntos = pos.pilotoId ? puntosPorPosicion[pos.posicion - 1] || 0 : 0;
+
+      html += `<tr><td>${pos.posicion}</td><td>`;
+      if (usuario.admin) {
+        html += `<select data-carrera="${c.nombre}" data-posicion="${pos.posicion}">
+          <option value="">--Seleccionar--</option>`;
+        pilotosActivos.forEach(pil => {
+          if (!pilotosAsignados.includes(pil._id) || pil._id === pos.pilotoId) {
+            html += `<option value="${pil._id}" ${pil._id === pos.pilotoId ? 'selected' : ''}>${pil.gamertag}</option>`;
+          }
+        });
+        html += `</select>`;
+      } else {
+        html += pos.gamertag || '-';
+      }
+      html += `</td><td>${puntos}</td></tr>`;
+
+      if (pos.pilotoId) pilotosAsignados.push(pos.pilotoId);
+    });
+
+    html += `</tbody></table>`;
+    div.innerHTML = html;
+    cont.appendChild(div);
+  });
+
+  // --- Listeners para admin ---
+  if (usuario.admin) {
+    document.querySelectorAll('select').forEach(sel => {
+      sel.addEventListener('change', async () => {
+        const carrera = sel.dataset.carrera;
+        const posicion = sel.dataset.posicion;
+        const pilotoId = sel.value;
+        const gamertag = sel.options[sel.selectedIndex].text;
+
+        await fetch(`/api/resultados/${carrera}/${posicion}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          },
+          body: JSON.stringify({ pilotoId, gamertag })
+        });
+        // No recargamos, el cambio se propagará vía Socket.IO
+      });
+    });
+  }
+}
+
+// Escuchar eventos de actualización
+socket.on("resultadosActualizados", data => {
+  cargarResultados(data);
+});
+
+// Cargar resultados inicial
+cargarResultados();
+
+</script>
+
+
+
+</body>
+</html>

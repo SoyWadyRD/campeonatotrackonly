@@ -46,6 +46,12 @@ exports.registrar = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
 // 📌 Login usuario
 exports.login = async (req, res) => {
   try {
@@ -74,11 +80,16 @@ exports.login = async (req, res) => {
     );
 
     // 🔹 Responder con usuario y token (sin emojis)
-    res.status(200).json({
-      message: "Login exitoso",
-      usuario: { _id: usuario._id, gamertag: usuario.gamertag },
-      token
-    });
+    // 🔹 Responder con usuario y token (incluyendo admin)
+res.status(200).json({
+  message: "Login exitoso",
+  usuario: { 
+    _id: usuario._id, 
+    gamertag: usuario.gamertag,
+    admin: usuario.admin  // <--- aquí lo agregas
+  },
+  token
+});
   } catch (error) {
     console.log(`💥 Error en el servidor: ${error.message}`);
     res.status(500).json({ message: "Error en el servidor", error: error.message });

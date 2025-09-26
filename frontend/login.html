@@ -183,13 +183,17 @@
       notification.style.display = "block";
 
       if (res.status === 200) {
-        localStorage.setItem("usuario", JSON.stringify(data.usuario));
-        localStorage.setItem("token", data.token);
-        setTimeout(() => {
-          notification.style.display = "none";
-          window.location.href = "index.html";
-        }, 2000);
-      } else {
+  localStorage.setItem("usuario", JSON.stringify({
+    id: data.usuario._id,
+    gamertag: data.usuario.gamertag,
+    admin: data.usuario.admin // <-- agregar esto
+  }));
+  localStorage.setItem("token", data.token);
+  setTimeout(() => {
+    notification.style.display = "none";
+    window.location.href = "index.html";
+  }, 2000);
+} else {
         setTimeout(() => { notification.style.display = "none"; }, 2000);
       }
     } catch (error) {

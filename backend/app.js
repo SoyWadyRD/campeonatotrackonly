@@ -31,11 +31,40 @@ app.use("/api/auth", authRoutes);
 const inscripcionesRoutes = require("./routes/inscripciones");
 app.use("/api/inscripciones", inscripcionesRoutes);
 
+const resultadosRoutes = require("./routes/resultados");
+app.use("/api/resultados", resultadosRoutes);
+
+const usuariosRouter = require('./routes/usuarios');
+app.use('/api/usuarios', usuariosRouter);
+
+
+
 // Ruta base de API
 app.get("/api", (req, res) => {
   res.send("🚀 API Torneo Track Only funcionando!");
 });
 
+
+
+
+
+
+// --- Crear servidor HTTP para Socket.IO ---
+const server = require("http").createServer(app);
+const io = require("socket.io")(server, { cors: { origin: "*" } });
+
+// Guardar io para usar en controllers
+app.set("io", io);
+
+// Escuchar conexiones de clientes
+io.on("connection", (socket) => {
+  console.log("🔵 Cliente conectado: ", socket.id);
+});
+
+
+
+
+
 // Puerto
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Servidor corriendo en puerto ${PORT}`));
+server.listen(PORT, () => console.log(`✅ Servidor corriendo en puerto ${PORT}`));
