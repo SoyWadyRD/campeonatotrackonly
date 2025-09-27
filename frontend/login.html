@@ -184,10 +184,11 @@
 
       if (res.status === 200) {
   localStorage.setItem("usuario", JSON.stringify({
-    id: data.usuario._id,
-    gamertag: data.usuario.gamertag,
-    admin: data.usuario.admin // <-- agregar esto
-  }));
+  _id: data.usuario._id,   // 👈 usa "_id", no "id"
+  gamertag: data.usuario.gamertag,
+  admin: data.usuario.admin
+}));
+
   localStorage.setItem("token", data.token);
   setTimeout(() => {
     notification.style.display = "none";
