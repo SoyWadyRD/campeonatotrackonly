@@ -3,7 +3,10 @@ const Usuario = require("../models/usuarios");
 // 📌 Obtener inscripciones actuales y disponibilidad de autos
 exports.obtenerInscripciones = async (req, res) => {
   try {
+     console.log("📌 Llega petición a obtenerInscripciones"); // log inicial
+
     const usuarios = await Usuario.find({}).select("gamertag equipo auto");
+    console.log("Usuarios encontrados:", usuarios.length);
 
     // Estructura base de marcas y autos
     const marcas = [
@@ -19,15 +22,19 @@ exports.obtenerInscripciones = async (req, res) => {
     marcas.forEach((marca) => {
       marca.inscritos = marca.autos.map((auto) => {
         const usuario = usuarios.find(u => u.auto === auto);
+        console.log(`Verificando auto: ${auto} -> ${usuario ? usuario.gamertag : "Libre"}`);
         return usuario ? usuario.gamertag : null;
       });
     });
 
+    console.log("Marcas con inscritos:", marcas);
     res.status(200).json({ marcas });
   } catch (error) {
     res.status(500).json({ message: "Error al obtener inscripciones", error: error.message });
   }
 };
+
+
 
 // 📌 Inscribirse en un auto
 exports.inscribirse = async (req, res) => {
@@ -58,16 +65,22 @@ exports.inscribirse = async (req, res) => {
 exports.salirInscripcion = async (req, res) => {
   try {
     const { usuarioId } = req.params;
+    console.log("📌 Intentando salir de inscripción usuarioId:", usuarioId);
 
     const usuario = await Usuario.findById(usuarioId);
-    if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
+    if (!usuario) {
+      console.log("Usuario no encontrado al intentar salir");
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
 
     usuario.equipo = null;
     usuario.auto = null;
     await usuario.save();
+    console.log("Usuario salió de la inscripción exitosamente:", usuario);
 
     res.status(200).json({ message: "Salida de inscripción exitosa", usuario });
   } catch (error) {
+    console.error("Error al salir de inscripción:", error);
     res.status(500).json({ message: "Error al salir de la inscripción", error: error.message });
   }
 };
