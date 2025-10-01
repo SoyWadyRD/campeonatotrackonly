@@ -881,16 +881,19 @@ if(piloto2) {
   });
 
   // Eventos salir
-  document.querySelectorAll(".salir").forEach(btn=>{
-    btn.addEventListener("click", async ()=>{
-      try{
-        const res = await fetch(`/api/inscripciones/salir/${usuario._id}`, { method: "DELETE" });
-        const data = await res.json();
-        mostrarNotificacion(data.message);
-        cargarInscripciones();
-      }catch(e){ mostrarNotificacion("Error al salir"); }
-    });
-  });
+  ddocument.getElementById("tabla-container").addEventListener("click", async (e) => {
+    if (e.target.classList.contains("salir")) {
+        try {
+            const res = await fetch(`/api/inscripciones/salir/${usuario._id}`, { method: "DELETE" });
+            const data = await res.json();
+            mostrarNotificacion(data.message);
+            cargarInscripciones();
+        } catch (err) {
+            mostrarNotificacion("Error al salir");
+        }
+    }
+});
+
 }
 
 cargarInscripciones();
