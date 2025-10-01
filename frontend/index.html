@@ -881,7 +881,7 @@ if(piloto2) {
   });
 
   // Eventos salir
-  ddocument.getElementById("tabla-container").addEventListener("click", async (e) => {
+  document.getElementById("tabla-container").addEventListener("click", async (e) => {
     if (e.target.classList.contains("salir")) {
         try {
             const res = await fetch(`/api/inscripciones/salir/${usuario._id}`, { method: "DELETE" });
