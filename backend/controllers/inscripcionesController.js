@@ -64,10 +64,11 @@ exports.inscribirse = async (req, res) => {
 // 📌 Salir de inscripción
 exports.salirInscripcion = async (req, res) => {
   try {
-    const { usuarioId } = req.params;
+    const { usuarioId } = req.params; // sigue siendo usuarioId para la ruta
     console.log("📌 Intentando salir de inscripción usuarioId:", usuarioId);
 
-    const usuario = await Usuario.findById(usuarioId);
+    // Buscar por gamertag en vez de ObjectId
+    const usuario = await Usuario.findOne({ gamertag: usuarioId });
     if (!usuario) {
       console.log("Usuario no encontrado al intentar salir");
       return res.status(404).json({ message: "Usuario no encontrado" });
@@ -76,7 +77,7 @@ exports.salirInscripcion = async (req, res) => {
     usuario.equipo = null;
     usuario.auto = null;
     await usuario.save();
-    console.log("Usuario salió de la inscripción exitosamente:", usuario);
+    console.log("Usuario salió de la inscripción exitosamente:", usuario.gamertag);
 
     res.status(200).json({ message: "Salida de inscripción exitosa", usuario });
   } catch (error) {
@@ -84,3 +85,4 @@ exports.salirInscripcion = async (req, res) => {
     res.status(500).json({ message: "Error al salir de la inscripción", error: error.message });
   }
 };
+
