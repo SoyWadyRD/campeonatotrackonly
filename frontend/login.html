@@ -159,50 +159,47 @@
 
 <script>
   const form = document.getElementById("loginForm");
-  const notification = document.getElementById("notification");
-  const togglePassword = document.querySelector(".toggle-password");
-  const passwordInput = document.getElementById("password");
+const notification = document.getElementById("notification");
+const togglePassword = document.querySelector(".toggle-password");
+const passwordInput = document.getElementById("password");
 
-  togglePassword.addEventListener("click", () => {
-    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-  });
+togglePassword.addEventListener("click", () => {
+  passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+});
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const gamertag = document.getElementById("gamertag").value;
-    const password = passwordInput.value;
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const gamertag = document.getElementById("gamertag").value;
+  const password = passwordInput.value;
 
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ gamertag, password }),
-      });
-      const data = await res.json();
-      notification.textContent = data.message;
-      notification.style.display = "block";
+  try {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ gamertag, password }),
+    });
+    const data = await res.json();
+    notification.textContent = data.message;
+    notification.style.display = "block";
 
-      if (res.status === 200) {
-  localStorage.setItem("usuario", JSON.stringify({
-  _id: data.usuario._id,   // 👈 usa "_id", no "id"
-  gamertag: data.usuario.gamertag,
-  admin: data.usuario.admin
-}));
+    if (res.status === 200) {
+      // Guardar todo el usuario tal cual para que index.html tenga _id
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+      localStorage.setItem("token", data.token);
 
-  localStorage.setItem("token", data.token);
-  setTimeout(() => {
-    notification.style.display = "none";
-    window.location.href = "index.html";
-  }, 2000);
-} else {
-        setTimeout(() => { notification.style.display = "none"; }, 2000);
-      }
-    } catch (error) {
-      notification.textContent = "Error al iniciar sesión";
-      notification.style.display = "block";
+      setTimeout(() => {
+        notification.style.display = "none";
+        window.location.href = "index.html";
+      }, 2000);
+    } else {
       setTimeout(() => { notification.style.display = "none"; }, 2000);
     }
-  });
+  } catch (error) {
+    notification.textContent = "Error al iniciar sesión";
+    notification.style.display = "block";
+    setTimeout(() => { notification.style.display = "none"; }, 2000);
+  }
+});
 </script>
 
 </body>
