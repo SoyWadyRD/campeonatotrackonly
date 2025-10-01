@@ -884,7 +884,8 @@ if(piloto2) {
   document.getElementById("tabla-container").addEventListener("click", async (e) => {
     if (e.target.classList.contains("salir")) {
         try {
-            const res = await fetch(`/api/inscripciones/salir/${usuario._id}`, { method: "DELETE" });
+            // usamos gamertag en vez de _id
+            const res = await fetch(`/api/inscripciones/salir/${usuario.gamertag}`, { method: "DELETE" });
             const data = await res.json();
             mostrarNotificacion(data.message);
             cargarInscripciones();
@@ -893,6 +894,7 @@ if(piloto2) {
         }
     }
 });
+
 
 }
 
